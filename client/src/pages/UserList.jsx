@@ -29,10 +29,12 @@ const UserList = () => {
       .required("Email is required"),
     username: Yup.string().required("Username is required"),
     userType: Yup.string().required("User Type is required"),
+  image: Yup.string().required("Image is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
       .required("Password is required"),
   });
+
 
   const editUserSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -41,7 +43,7 @@ const UserList = () => {
       .required("Email is required"),
     username: Yup.string().required("Username is required"),
     userType: Yup.string().required("User Type is required"),
-    imageUrl: Yup.string().required("Image is required"),
+    image: Yup.string().required("Image is required"),
   });
 
   const [data, setData] = useState([]);
@@ -294,6 +296,7 @@ const UserList = () => {
             <Table theme={tableTheme} striped={true}>
               <Table.Head>
                 <Table.HeadCell>#</Table.HeadCell>
+                <Table.HeadCell>image</Table.HeadCell>
                 <Table.HeadCell>name</Table.HeadCell>
                 <Table.HeadCell>email</Table.HeadCell>
                 <Table.HeadCell>username</Table.HeadCell>
@@ -325,6 +328,9 @@ const UserList = () => {
                         <Table.Cell>
                           <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-full animate-pulse"></div>
                         </Table.Cell>
+                        <Table.Cell>
+                          <div className="h-4 bg-gray-200 rounded dark:bg-gray-700 w-full animate-pulse"></div>
+                        </Table.Cell>
                       </Table.Row>
                     ))
                   : currentData.map((user, index) => (
@@ -333,6 +339,16 @@ const UserList = () => {
                         className="bg-white dark:bg-gray-800"
                       >
                         <Table.Cell>{serialNumber + index}</Table.Cell>
+                        <Table.Cell>
+                          <img
+                            src={
+                            `${import.meta.env.VITE_BACKEND_URL}/${user?.imageUrl}` ??
+                              "No image"
+                            }
+                            alt={user.name}
+                            className="h-12 w-12 object-cover"
+                          />
+                        </Table.Cell>
                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white ">
                           {user.name}
                         </Table.Cell>
@@ -568,9 +584,9 @@ const UserList = () => {
             />
            
 
-            {editFormik.errors.image && (
+            {/* {editFormik.errors.image && (
               <p className="text-red-600">{editFormik.errors.image}</p>
-            )}
+            )} */}
 
             <Label htmlFor="name">Name</Label>
             <TextInput
